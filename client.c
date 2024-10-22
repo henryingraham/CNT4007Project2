@@ -22,7 +22,7 @@
 #define PORT 3001
 #define BUF_SIZE 1024
 #define CLIENT_DIR "./clientFiles/"
-#define MAX_MISSING_FILES 1024  // Adjust size as needed
+#define MAX_MISSING_FILES 1024
 char missing_files[MAX_MISSING_FILES][BUF_SIZE];
 
 // Compute the hash of a file (SHA-256)
@@ -36,7 +36,6 @@ void compute_file_hash(const char* file_path, unsigned char hash[SHA256_DIGEST_L
     unsigned char buffer[BUF_SIZE];
     size_t bytes_read;
     
-    // Use the EVP interface for hashing
     EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
     const EVP_MD *md = EVP_sha256();
 
@@ -85,13 +84,13 @@ void list_files(int sock) {
 
         if (received < 0) {
             perror("Failed to receive data");
-            break;  // Exit if there was an error
+            break;
         } else if (received == 0) {
             printf("Server disconnected\n");
-            break;  // Server disconnected
+            break;
         }
 
-        server_reply[received] = '\0';  // Null-terminate the response
+        server_reply[received] = '\0'; 
 
         // Debugging line
         //printf("Received data from server: %s\n", server_reply);
@@ -105,17 +104,15 @@ void list_files(int sock) {
             }
             file = strtok(NULL, "\n");
         }
-        
-        // Break after listing files once
         break; 
     }
 }
 
 // Function to send the DIFF command with the client files' hashes
 void diff_files(int sock) {
-    memset(missing_files, 0, sizeof(missing_files));  // Clear the missing_files array
+    memset(missing_files, 0, sizeof(missing_files));
     char message[BUF_SIZE] = "DIFF ";
-    char client_file_hashes[BUF_SIZE * 10] = "";  // To store hashes of client files
+    char client_file_hashes[BUF_SIZE * 10] = "";
     DIR *d;
     struct dirent *dir;
     unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -205,12 +202,6 @@ void pull_files(int clientSock, char missing_files[][BUF_SIZE]) {
                 printf("Error or connection closed by server.\n");
                 break;  // Stop reading if there's an error or the connection is closed
             }
-
-            // // Check for EOF marker
-            // if (strncmp(buffer, "EOF", 3) == 0) {
-            //     printf("End of file reached for %s.\n", missing_files[i]);
-            //     break;  // Exit loop when EOF is received
-            // }
 
             // Write to the file
             fwrite(buffer, sizeof(char), bytes_received, file);

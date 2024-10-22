@@ -23,7 +23,6 @@
 #define BUF_SIZE 1024
 #define SERVER_DIR "./serverFiles/"  // Directory for server files
 
-// Function prototypes
 void compute_file_hash(const char* file_path, unsigned char hash[SHA256_DIGEST_LENGTH]);
 void send_file_list(int sock);
 void send_diff(int sock, const char* client_file_hashes);
@@ -81,7 +80,7 @@ void send_file_list(int sock) {
     }
 
     while ((dir = readdir(d)) != NULL) {
-        if (dir->d_type == DT_REG) {  // Regular file
+        if (dir->d_type == DT_REG) {
             strcat(file_list, dir->d_name);
             strcat(file_list, "\n");
         }
@@ -169,10 +168,6 @@ void send_files(int client_sock, char *file_name) {
     }
 
     fclose(file);
-
-    // Send an end-of-file (EOF) marker to signal the end of transmission
-    // char eof_marker[] = "EOF";
-    // send(client_sock, eof_marker, strlen(eof_marker), 0);
     printf("File %s sent successfully.\n", file_name);
 }
 
@@ -223,7 +218,6 @@ void* client_handler(void* socket_desc) {
     pthread_exit(NULL);
 }
 
-// Main function to set up the server
 int main() {
     int server_fd, new_socket, *new_sock;
     struct sockaddr_in server, client;
@@ -272,7 +266,7 @@ int main() {
         }
     }
 
-    // Close the server socket (this will never be reached in this loop)
+    // Close the server socket
     close(server_fd);
     return 0;
 }

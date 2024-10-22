@@ -9,8 +9,8 @@ This project implements a networked application where multiple machines can sync
 - `Makefile`: Used for compiling the client and server programs.
 
 ## Directories
-- `clientFiles/`: Directory containing the client’s music files (represented as `.png` files for simplicity).
-- `serverFiles/`: Directory containing the server’s music files (represented as `.png` files for simplicity).
+- `clientFiles/`: Directory containing the client’s music files (represented as `.txt` files for simplicity).
+- `serverFiles/`: Directory containing the server’s music files (represented as `.txt` files for simplicity).
 
 ## Dependencies
 - `gcc` (GNU Compiler Collection)
